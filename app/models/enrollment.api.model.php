@@ -23,7 +23,6 @@ class EnrollmentModel {
         $query = $this->db->prepare($sql);
         $query->execute([$id]);
 
-        // Obtiene los resultados
         $students = $query->fetchAll(PDO::FETCH_OBJ);
 
         return $students;

@@ -1,5 +1,5 @@
 <?php
-require_once 'app/models/students.model.php';
+require_once 'app/models/students.api.model.php';
 require_once 'app/views/json.view.php';
 
 class StudentsApiController {
@@ -14,6 +14,11 @@ class StudentsApiController {
     
     public function getAllStudents($req, $res) {
         $students = $this->model->getAllStudents();
+        
+        if (!$students) {
+            return $this->view->response("No hay estudiantes inscriptos", 404);
+        }
+        
         return $this->view->response($students);
     }
 
@@ -21,6 +26,10 @@ class StudentsApiController {
     
     public function getStudent($req, $res) {
         $id = $req->params->id;
+
+        if (empty($id)) {
+            return $this->view->response("ID no especificado", 400);
+        }
 
         $student= $this->model->getStudent($id);
 
@@ -35,12 +44,15 @@ class StudentsApiController {
     public function deleteStudent($req, $res) {
         $id = $req->params->id;
 
+        if (empty($id)) {
+            return $this->view->response("ID no especificado", 400);
+        }
+
         $student = $this->model->getStudent($id);
 
         if (!$student) {
             return $this->view->response("el alumno con el id= $id no existe", 404);
         }
-
         $this->model->eraseStudent($id);
         $this->view->response("el alumno con el id= $id se eliminó con éxito");
     }
@@ -69,6 +81,10 @@ class StudentsApiController {
     public function updateStudent($req, $res) {
         $id = $req->params->id;
 
+        if (empty($id)) {
+            return $this->view->response("ID no especificado", 400);
+        }
+
         $student = $this->model->getStudent($id);
         if (!$student) {
             return $this->view->response("El alumno con el id=$id no existe", 404);
@@ -84,9 +100,9 @@ class StudentsApiController {
         $celular = $req->body->celular;
         $domicilio = $req->body->domicilio; 
 
-        $this->model->updateStudent($nombre, $apellido, $dni, $celular, $domicilio);
+        $this->model->updateStudent($nombre, $apellido, $dni, $celular, $domicilio, $id);
 
-        $stuent = $this->model->getStudent($id);
+        $student = $this->model->getStudent($id);
         $this->view->response($student, 200);
     }
 

@@ -1,5 +1,5 @@
 <?php
-require_once 'app/models/courses.model.php';
+require_once 'app/models/courses.api.model.php';
 require_once 'app/views/json.view.php';
 
 class CoursesApiController {
@@ -56,12 +56,13 @@ class CoursesApiController {
     }
 
     public function createCourse($req, $res) {
-
+        
+        var_dump($req->body);
         // valido los datos
-        if (empty($req->body->nombre) || empty($req->body->descripcion) || empty($req->body->categoria)) {
+        if (empty($req->body->nombre) || empty($req->body->descripcion) || empty($req->body->categoria) || empty($req->body->duracion) || empty($req->body->profesor) || empty($req->body->costo) || empty($req->body->imagen)) {
             return $this->view->response('Faltan completar datos', 400);
         }
-
+        
         // obtengo los datos
         $categoria = $req->body->categoria;
         $nombre = $req->body->nombre;       
@@ -76,11 +77,12 @@ class CoursesApiController {
 
         if (!$id) {
             return $this->view->response("Error al insertar tarea", 500);
+        }else{
+            $course = $this->model->getCourse($id);
+            return $this->view->response($course, 201);
         }
 
-        // buena práctica es devolver el recurso insertado
-        $course = $this->model->getCourse($id);
-        return $this->view->response($course, 201);
+        
     }
     public function updateCourse($req, $res) {
         $id = $req->params->id;
@@ -92,11 +94,10 @@ class CoursesApiController {
         }
 
          // valido los datos
-         if (empty($req->body->nombre) || empty($req->body->descripcion) || empty($req->body->categoria)) {
+         if (empty($req->body->nombre) || empty($req->body->descripcion) || empty($req->body->categoria) || empty($req->body->duracion) || empty($req->body->profesor) || empty($req->body->costo) || empty($req->body->imagen)) {
             return $this->view->response('Faltan completar datos', 400);
         }
 
-        // obtengo los datos
         $categoria = $req->body->categoria;
         $nombre = $req->body->nombre;       
         $descripcion = $req->body->descripcion;       
@@ -105,10 +106,10 @@ class CoursesApiController {
         $costo = $req->body->costo; 
         $imagen = $req->body->imagen;    
 
-        $this->model->updateCourse($categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen);
+        $this->model->updateCourse($categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen, $id);
 
-        $task = $this->model->getCourse($id);
-        $this->view->response($task, 200);
+        $course = $this->model->getCourse($id);
+        $this->view->response($course, 200);
     }
 
 }

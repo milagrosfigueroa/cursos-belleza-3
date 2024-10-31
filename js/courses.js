@@ -98,9 +98,6 @@ function showCourses() {
         ul.innerHTML += html;
     }
 
-    // actualizo el total
-    let count = document.querySelector("#count");
-    count.innerHTML = courses.length;
 
     // asigno event listener para los botones
     const btnsDelete = document.querySelectorAll('a.btn-delete');

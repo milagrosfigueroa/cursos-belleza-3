@@ -17,7 +17,7 @@ require_once 'app/controllers/enrollment.api.controller.php';
  $router->addRoute('alumnos/:id'  ,      'GET',     'StudentsApiController',   'getStudent'   );
  $router->addRoute('alumnos/:id'  ,      'DELETE',  'StudentsApiController',   'deleteStudent');
  $router->addRoute('alumnos/:id'  ,      'PUT',    'StudentsApiController',   'updateStudent');
- $router->addRoute('alumnos'      ,      'POST',     'CoursesApiController',   'createStudent');
+ $router->addRoute('alumnos'      ,      'POST',     'StudentsApiController',   'createStudent');
 
  $router->addRoute('inscriptos',         'GET',     'EnrollmentApiController',   'getAllEnrolledStudents');
  $router->addRoute('inscriptos/:id',     'GET',     'EnrollmentApiController',   'getEnrolledStudentsByCourse');

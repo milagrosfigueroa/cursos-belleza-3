@@ -37,7 +37,7 @@ class CoursesModel {
     
  
     public function getCourse($id) {    
-        $query = $this->db->prepare('SELECT * FROM cursos WHERE id = ?');
+        $query = $this->db->prepare('SELECT * FROM cursos WHERE ID_curso = ?');
         $query->execute([$id]);   
     
         $course = $query->fetch(PDO::FETCH_OBJ);
@@ -53,15 +53,20 @@ class CoursesModel {
     
         return $id;
     }
+    public function deleteInscriptionsByCourse($id) {
+        $query = $this->db->prepare('DELETE FROM inscriptos WHERE ID_curso = ?');
+        $query->execute([$id]);
+    }
  
     public function eraseCourse($id) {
-        $query = $this->db->prepare('DELETE FROM curso WHERE id = ?');
+        $this->deleteInscriptionsByCourse($id);
+        $query = $this->db->prepare('DELETE FROM cursos WHERE ID_curso = ?');
         $query->execute([$id]);
     }
 
 
-    function updateCourse($categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen) {    
-        $query = $this->db->prepare('UPDATE cursos SET categoria = ?, nombre = ?, descripcion = ?, duracion = ?, profesor = ?, costo= ?, imagen = ? WHERE id = ?');
-        $query->execute([$categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen]);
+    function updateCourse($categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen, $id) {    
+        $query = $this->db->prepare('UPDATE cursos SET categoria = ?, nombre = ?, descripcion = ?, duracion = ?, profesor = ?, costo= ?, imagen = ? WHERE ID_curso = ?');
+        $query->execute([$categoria, $nombre, $descripcion, $duracion, $profesor, $costo, $imagen, $id]);
     }
 }

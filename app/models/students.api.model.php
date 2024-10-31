@@ -17,7 +17,7 @@ class StudentsModel {
     
  
     public function getStudent($id) {    
-        $query = $this->db->prepare('SELECT * FROM alumnos WHERE id = ?');
+        $query = $this->db->prepare('SELECT * FROM alumnos WHERE ID_alumno = ?');
         $query->execute([$id]);   
     
         $students = $query->fetch(PDO::FETCH_OBJ);
@@ -35,13 +35,20 @@ class StudentsModel {
     }
  
     public function eraseStudent($id) {
-        $query = $this->db->prepare('DELETE FROM alumnos WHERE id = ?');
+        $this->deleteEnrollmentsByStudentId($id);
+        $query = $this->db->prepare('DELETE FROM alumnos WHERE ID_alumno = ?');
         $query->execute([$id]);
     }
 
 
-    function updateStudent($nombre, $apellido, $dni, $celular, $domicilio) {    
-        $query = $this->db->prepare('UPDATE alumnos SET nombre = ?, apellido = ?, dni = ?, celular = ?, domicilio = ? WHERE id = ?');
-        $query->execute([$nombre, $apellido, $dni, $celular, $domicilio]);
+    function updateStudent($nombre, $apellido, $dni, $celular, $domicilio, $id) {    
+        $query = $this->db->prepare('UPDATE alumnos SET nombre = ?, apellido = ?, dni = ?, celular = ?, domicilio = ? WHERE ID_alumno = ?');
+        $query->execute([$nombre, $apellido, $dni, $celular, $domicilio, $id]);
     }
+
+    public function deleteEnrollmentsByStudentId($id) {
+        $query = $this->db->prepare('DELETE FROM inscriptos WHERE ID_alumno = ?');
+        $query->execute([$id]);
+    }
+    
 }

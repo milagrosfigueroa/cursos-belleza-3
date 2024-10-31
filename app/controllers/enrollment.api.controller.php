@@ -1,5 +1,5 @@
 <?php
-require_once 'app/models/enrollment.model.php';
+require_once 'app/models/enrollment.api.model.php';
 require_once 'app/views/json.view.php';
 
 class EnrollmentApiController {
@@ -13,10 +13,16 @@ class EnrollmentApiController {
  
     public function getAllEnrolledStudents($req, $res) {
         $students = $this->model->getAllEnrolledStudents();
+        
+        if (!$students) {
+            return $this->view->response("No hay estudiantes inscriptos en ningún curso", 404);
+        }
+        
         return $this->view->response($students);
     }
+    
 
-    public function getEnrolledStudentsBycourse(){
+    public function getEnrolledStudentsBycourse($req, $res){
         if (!isset($req->params->idCurso)) {
             return $this->view->response("ID de curso no especificado", 400);
         }

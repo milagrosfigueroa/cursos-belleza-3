@@ -23,13 +23,13 @@ class EnrollmentApiController {
     
 
     public function getEnrolledStudentsBycourse($req, $res){
-        if (!isset($req->params->idCurso)) {
+        if (!isset($req->params->id)) {
             return $this->view->response("ID de curso no especificado", 400);
         }
     
-        $idCurso = $req->params->idCurso;
+        $id = $req->params->id;
     
-        $students = $this->model->getEnrolledStudentsByCourse($idCurso);
+        $students = $this->model->getEnrolledStudentsByCourse($id);
 
         if (empty($students)) {
             return $this->view->response("No hay estudiantes inscriptos en este curso", 404);
